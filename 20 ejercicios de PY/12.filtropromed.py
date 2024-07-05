@@ -1,0 +1,43 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from skimage import io, util, filters
+
+# Ruta de tu imagen (cambia 'ruta/a/tu/imagen.jpg' por la ruta real de tu imagen)
+ruta_imagen = 'z.jpg'
+
+try:
+    # Cargar la imagen
+    image = io.imread(ruta_imagen, as_gray=True)
+
+    # Añadir ruido de sal y pimienta a la imagen
+    amount = 0.05  # Proporción de píxeles afectados por el ruido
+    image_noisy = util.random_noise(image, mode='s&p', amount=amount)
+
+    # Aplicar filtro de mediana para reducir el ruido
+    image_denoised = filters.median(image_noisy)
+
+    # Mostrar la imagen original, la imagen con ruido y la imagen filtrada
+    plt.figure(figsize=(15, 5))
+
+    plt.subplot(1, 3, 1)
+    plt.imshow(image, cmap='gray')
+    plt.title('Imagen Original')
+    plt.axis('off')
+
+    plt.subplot(1, 3, 2)
+    plt.imshow(image_noisy, cmap='gray')
+    plt.title(f'Imagen con Ruido de Sal y Pimienta\n(amount={amount})')
+    plt.axis('off')
+
+    plt.subplot(1, 3, 3)
+    plt.imshow(image_denoised, cmap='gray')
+    plt.title('Imagen Filtrada (Filtro de Mediana)')
+    plt.axis('off')
+
+    plt.tight_layout()
+    plt.show()
+
+except IOError:
+    print(f"No se pudo cargar la imagen en {ruta_imagen}. Verifica la ruta y el formato de la imagen.")
+except Exception as e:
+    print(f"Error: {str(e)}")
